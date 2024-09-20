@@ -1,0 +1,79 @@
+<ion-header translucent="true">
+  <ion-toolbar>
+    <ion-title>Menu de Administrador</ion-title>
+    <ion-buttons slot="end">
+      <ion-button color="danger" (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button expand="block" color="primary" (click)="cadastrarBiblioteca()">Cadastrar Biblioteca</ion-button>
+
+  <ion-button expand="block" color="secondary" (click)="showSessionDetails()">Mostrar Detalhes da Sessão</ion-button>
+
+  <ion-list *ngIf="bibliotecas.length > 0">
+    <ion-list-header>
+      <ion-label><h1>Lista de Bibliotecas</h1></ion-label>
+
+      <ion-button size="small" fill="clear" color="primary" (click)="reloadBibliotecas()">
+        <ion-icon slot="icon-only" name="reload-outline"></ion-icon>
+      </ion-button>
+    </ion-list-header>
+
+    <ion-item *ngFor="let biblioteca of bibliotecas">
+      <ion-label>
+        <h2>{{ biblioteca.nome }}</h2>
+        <p>{{ biblioteca.endereco }}</p>
+      </ion-label>
+
+      <!-- EDITAR -->
+      <ion-button color="secondary" (click)="editBiblioteca(biblioteca)">
+        <ion-icon name="create-outline"></ion-icon>
+      </ion-button>
+
+      <!-- DELETAR -->
+      <ion-button color="danger" (click)="confirmDelete(biblioteca._id)">
+        <ion-icon name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-text color="medium" *ngIf="bibliotecas.length === 0">
+    Nenhuma biblioteca encontrada.
+  </ion-text>
+
+  <!-- Modal to show session details -->
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Detalhes da Sessão</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Fechar</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+      <ion-item>
+        <ion-label>ID da Sessão</ion-label>
+        <ion-text>{{ sessionDetails?.id || 'N/A' }}</ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nome do Usuário</ion-label>
+        <ion-text>{{ sessionDetails?.nomeCompleto || 'N/A' }}</ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label>Email</ion-label>
+        <ion-text>{{ sessionDetails?.email || 'N/A' }}</ion-text>
+      </ion-item>
+      <ion-item>
+        <ion-label>Role</ion-label>
+        <ion-text>{{ sessionDetails?.role || 'N/A' }}</ion-text>
+      </ion-item>
+    </ion-content>
+  </ion-modal>
+
+</ion-content>
